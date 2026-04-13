@@ -39,4 +39,5 @@ Create a .env file using .env.example
 Add your API key and email credentials
 Install dependencies:
 pip install -r requirements.txt
+then run this;
 python app.py
