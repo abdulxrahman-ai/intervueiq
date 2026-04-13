@@ -1,28 +1,26 @@
-# IntervueIQ
+IntervueIQ is an AI-powered interview simulator designed to help you practice smarter and track your improvement over time.
 
-Adaptive multi-role AI interview simulator with:
-Resume parsing
-Job description matching
-Dynamic interview questions
-Answer evaluation
-SQL-based analytics
-Comparison with previous interviews
-Voice transcription
-PDF report generation
-Optional email delivery
+It goes beyond basic mock interviews by adapting to different roles and analyzing your performance in depth.
 
-## Local setup
+What it does?
 
-1. Copy `.env.example` to `.env`
-2. Add your API key and email credentials
-3. Install dependencies:
+Parses your resume to understand your background
+Matches your profile with a job description
+Generates dynamic, role-specific interview questions
+Evaluates your answers with AI
+Tracks performance using SQL-based analytics
+Compares your current interview with previous sessions
+Supports voice-based responses (transcription)
+Generates a detailed PDF report
+Optionally sends your report via email
 
-```bash
-pip install -r requirements.txt
-```
+Why this project?
 
-4. Run the app:
+Most interview tools just ask questions.
+IntervueIQ focuses on improvement.
 
-```bash
-python app.py
-```
+It helps you:
+
+Identify weak areas
+Track progress over time
+Practice realistically based on actual job roles
