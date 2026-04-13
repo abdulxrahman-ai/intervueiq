@@ -24,3 +24,19 @@ It helps you:
 Identify weak areas
 Track progress over time
 Practice realistically based on actual job roles
+
+Tech Stack
+Python
+Gradio (UI)
+OpenAI API
+SQL (for analytics & tracking)
+PDF generation
+Speech-to-text (voice support)
+
+Local Setup
+Clone the repository
+Create a .env file using .env.example
+Add your API key and email credentials
+Install dependencies:
+pip install -r requirements.txt
+python app.py
