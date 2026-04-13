@@ -1,15 +1,15 @@
 # IntervueIQ
 
 Adaptive multi-role AI interview simulator with:
-- resume parsing
-- job description matching
-- dynamic interview questions
-- answer evaluation
-- SQL-based analytics
-- comparison with previous interviews
-- voice transcription
-- PDF report generation
-- optional email delivery
+Resume parsing
+Job description matching
+Dynamic interview questions
+Answer evaluation
+SQL-based analytics
+Comparison with previous interviews
+Voice transcription
+PDF report generation
+Optional email delivery
 
 ## Local setup
 
