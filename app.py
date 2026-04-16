@@ -65,7 +65,7 @@ def normalize_items(items, fallback="None"):
 
 def render_empty_card(title, subtitle):
     return f"""
-    <div class="empty-card">
+    <div class="empty-card reveal-up">
         <div class="empty-title">{html.escape(title)}</div>
         <div class="empty-text">{html.escape(subtitle)}</div>
     </div>
@@ -97,7 +97,7 @@ def render_analysis_dashboard(profile, inferred_role):
     education_html = "".join(f"<li>{html.escape(item)}</li>" for item in education[:3])
 
     return f"""
-    <div class="glass-card summary-card">
+    <div class="glass-card summary-card reveal-up">
         <div class="eyebrow">Resume Intelligence</div>
         <div class="summary-top">
             <div>
@@ -111,32 +111,32 @@ def render_analysis_dashboard(profile, inferred_role):
         </div>
 
         <div class="summary-stack">
-            <div class="summary-item-card">
+            <div class="summary-item-card clay-card">
                 <div class="summary-item-label">Email</div>
                 <div class="summary-item-value">{email}</div>
             </div>
 
-            <div class="summary-item-card">
+            <div class="summary-item-card clay-card">
                 <div class="summary-item-label">Phone</div>
                 <div class="summary-item-value">{phone}</div>
             </div>
 
-            <div class="summary-item-card">
+            <div class="summary-item-card clay-card">
                 <div class="summary-item-label">Skills</div>
                 <div class="skills-wrap compact">{skills_html}</div>
             </div>
 
-            <div class="summary-item-card">
+            <div class="summary-item-card clay-card">
                 <div class="summary-item-label">Experience</div>
                 <ul class="stack-list">{experience_html}</ul>
             </div>
 
-            <div class="summary-item-card">
+            <div class="summary-item-card clay-card">
                 <div class="summary-item-label">Projects</div>
                 <ul class="stack-list">{projects_html}</ul>
             </div>
 
-            <div class="summary-item-card">
+            <div class="summary-item-card clay-card">
                 <div class="summary-item-label">Education</div>
                 <ul class="stack-list">{education_html}</ul>
             </div>
@@ -161,7 +161,7 @@ def render_progress(progress):
         status_text = "Interview not started"
 
     return f"""
-    <div class="glass-card progress-card">
+    <div class="glass-card progress-card reveal-up">
         <div class="progress-top">
             <div>
                 <div class="eyebrow">Live Progress</div>
@@ -189,7 +189,7 @@ def render_question_card(question_text):
         )
 
     return f"""
-    <div class="glass-card output-card">
+    <div class="glass-card output-card reveal-up">
         <div class="eyebrow">Current Question</div>
         <div class="card-title">Interview Prompt</div>
         <div class="question-text">{html.escape(question_text)}</div>
@@ -209,7 +209,7 @@ def render_report_overview(report, runtime):
     summary = report.get("overall_summary", "No summary available.")
 
     return f"""
-    <div class="results-hero glass-card">
+    <div class="results-hero glass-card reveal-up">
         <div class="score-orb">
             <div class="score-number">{html.escape(str(average_score))}</div>
             <div class="score-label">Average Score</div>
@@ -233,7 +233,7 @@ def render_text_panel(title, eyebrow, body_text):
         return render_empty_card(title, f"{title} will appear here once available.")
 
     return f"""
-    <div class="glass-card output-card">
+    <div class="glass-card output-card reveal-up">
         <div class="eyebrow">{html.escape(eyebrow)}</div>
         <div class="card-title">{html.escape(title)}</div>
         <div class="card-text preserve-lines">{html.escape(body_text)}</div>
@@ -499,13 +499,20 @@ custom_css = """
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
-    --bg-1: #050917;
-    --bg-2: #0b1223;
-    --border: rgba(255,255,255,0.10);
+    --bg-1: #030712;
+    --bg-2: #07111f;
+    --bg-3: #0b1730;
+    --panel: rgba(255,255,255,0.08);
+    --panel-2: rgba(255,255,255,0.05);
+    --border: rgba(255,255,255,0.14);
     --text: #eef2ff;
-    --muted: #cbd5e1;
-    --shadow: 0 20px 48px rgba(0,0,0,0.32);
-    --shadow-soft: 0 12px 28px rgba(0,0,0,0.20);
+    --muted: #bfd0ea;
+    --purple: #8b5cf6;
+    --indigo: #4f46e5;
+    --cyan: #22d3ee;
+    --shadow: 0 24px 70px rgba(0,0,0,0.45);
+    --shadow-soft: 0 16px 40px rgba(0,0,0,0.28);
+    --inner-light: inset 1px 1px 0 rgba(255,255,255,0.12), inset -1px -1px 0 rgba(255,255,255,0.02);
 }
 
 * {
@@ -520,10 +527,11 @@ html {
 html, body, .gradio-container {
     min-height: 100%;
     background:
-        radial-gradient(circle at 12% 18%, rgba(124,58,237,0.22), transparent 20%),
-        radial-gradient(circle at 84% 20%, rgba(79,70,229,0.16), transparent 22%),
-        radial-gradient(circle at 76% 78%, rgba(6,182,212,0.10), transparent 22%),
-        linear-gradient(180deg, var(--bg-1), var(--bg-2)) !important;
+        radial-gradient(circle at 12% 14%, rgba(139,92,246,0.24), transparent 18%),
+        radial-gradient(circle at 88% 12%, rgba(79,70,229,0.22), transparent 20%),
+        radial-gradient(circle at 82% 72%, rgba(34,211,238,0.14), transparent 22%),
+        radial-gradient(circle at 24% 86%, rgba(99,102,241,0.10), transparent 18%),
+        linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 40%, var(--bg-3) 100%) !important;
     color: var(--text) !important;
     overflow-x: hidden !important;
 }
@@ -535,15 +543,28 @@ body {
 body::before {
     content: "";
     position: fixed;
-    width: 260px;
-    height: 260px;
+    inset: 0;
+    background:
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+    background-size: 36px 36px;
+    mask-image: radial-gradient(circle at center, rgba(0,0,0,0.9), transparent 85%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    width: 320px;
+    height: 320px;
     left: var(--mx, 50vw);
     top: var(--my, 50vh);
     transform: translate(-50%, -50%);
-    background: radial-gradient(circle, rgba(124,58,237,0.12), rgba(79,70,229,0.05) 35%, transparent 70%);
+    background: radial-gradient(circle, rgba(139,92,246,0.14), rgba(79,70,229,0.07) 38%, transparent 72%);
+    filter: blur(20px);
     pointer-events: none;
     z-index: 0;
-    filter: blur(16px);
 }
 
 button, a, [role="button"] {
@@ -556,99 +577,139 @@ button, a, [role="button"] {
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 auto !important;
-    padding: 14px 16px 34px 16px !important;
+    padding: 18px 18px 34px 18px !important;
 }
 
 .main-shell,
 .hero-wrap,
 .section-shell,
 .glass-card,
-.timeline-node {
+.timeline-node,
+.summary-item-card,
+.info-card,
+.mini-panel,
+.empty-card {
     overflow: visible !important;
 }
 
+.main-shell {
+    width: 100%;
+}
+
 .hero-wrap {
+    position: relative;
     border: 1px solid var(--border);
-    background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
-    backdrop-filter: blur(22px);
+    background:
+        linear-gradient(135deg, rgba(255,255,255,0.13), rgba(255,255,255,0.05)),
+        rgba(255,255,255,0.03);
+    backdrop-filter: blur(26px);
+    -webkit-backdrop-filter: blur(26px);
     border-radius: 34px;
-    padding: 30px;
-    box-shadow: var(--shadow);
+    padding: 34px;
+    box-shadow: var(--shadow), var(--inner-light);
     margin-bottom: 18px;
+}
+
+.hero-wrap::before {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent 28%, transparent 72%, rgba(255,255,255,0.04));
+    pointer-events: none;
+    opacity: 0.9;
 }
 
 .hero-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.9fr);
+    grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.95fr);
     gap: 24px;
-    align-items: center;
+    align-items: stretch;
 }
 
 .hero-badge {
     display: inline-flex;
     padding: 10px 16px;
     border-radius: 999px;
-    color: #e9d5ff;
-    font-weight: 700;
+    color: #f5e8ff;
+    font-weight: 800;
     font-size: 12px;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border: 1px solid rgba(167,139,250,0.22);
-    background: rgba(124,58,237,0.14);
+    letter-spacing: 0.08em;
+    border: 1px solid rgba(196,181,253,0.26);
+    background: linear-gradient(135deg, rgba(139,92,246,0.22), rgba(79,70,229,0.14));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
     margin-bottom: 18px;
 }
 
 .hero-title {
-    font-size: clamp(42px, 6vw, 78px);
-    line-height: 1.02;
+    font-size: clamp(42px, 7vw, 84px);
+    line-height: 0.98;
     font-weight: 900;
     margin: 0;
     color: white;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.05em;
+    text-shadow: 0 10px 40px rgba(79,70,229,0.25);
 }
 
 .hero-subtitle {
-    margin-top: 16px;
+    margin-top: 18px;
     font-size: 18px;
     line-height: 1.9;
-    color: #dbe4ff;
+    color: #dce8ff;
+    max-width: 920px;
 }
 
 .hero-pills {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    margin-top: 22px;
+    margin-top: 24px;
 }
 
 .hero-pill {
     border-radius: 999px;
-    padding: 10px 14px;
-    background: rgba(255,255,255,0.06);
+    padding: 11px 15px;
+    background: rgba(255,255,255,0.07);
     border: 1px solid var(--border);
-    color: #e2e8f0;
+    color: #e7ecff;
     font-size: 13px;
-    font-weight: 600;
-    transition: all 0.22s ease;
+    font-weight: 700;
+    box-shadow: var(--inner-light);
+    transform-style: preserve-3d;
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
 }
 
 .hero-pill:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 18px rgba(124,58,237,0.14);
+    transform: translateY(-3px) translateZ(0);
+    box-shadow: 0 12px 28px rgba(79,70,229,0.22);
+    border-color: rgba(196,181,253,0.28);
 }
 
 .hero-side {
-    border-radius: 28px;
-    border: 1px solid rgba(255,255,255,0.10);
-    background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
-    backdrop-filter: blur(18px);
-    padding: 22px;
-    box-shadow: var(--shadow-soft);
+    position: relative;
+    border-radius: 30px;
+    border: 1px solid rgba(255,255,255,0.14);
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    padding: 24px;
+    box-shadow: var(--shadow-soft), var(--inner-light);
+}
+
+.hero-side::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(255,255,255,0.09), transparent 35%, transparent 65%, rgba(34,211,238,0.05));
+    pointer-events: none;
 }
 
 .hero-side-title {
     color: white;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 800;
     margin-bottom: 10px;
 }
@@ -656,11 +717,11 @@ button, a, [role="button"] {
 .hero-side-text {
     color: #d6def8;
     font-size: 14px;
-    line-height: 1.85;
+    line-height: 1.9;
 }
 
 .skills-heading {
-    margin-top: 14px;
+    margin-top: 16px;
     color: #ffffff;
     font-size: 13px;
     font-weight: 800;
@@ -670,57 +731,71 @@ button, a, [role="button"] {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 10px;
+    margin-top: 12px;
 }
 
 .about-chip {
     padding: 8px 12px;
     border-radius: 999px;
-    background: rgba(124,58,237,0.16);
-    color: #ede9fe;
-    border: 1px solid rgba(167,139,250,0.22);
+    background: linear-gradient(135deg, rgba(139,92,246,0.16), rgba(79,70,229,0.14));
+    color: #f0ebff;
+    border: 1px solid rgba(196,181,253,0.22);
     font-size: 12px;
     font-weight: 700;
+    box-shadow: var(--inner-light);
 }
 
 .section-shell {
+    position: relative;
     border: 1px solid var(--border);
-    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-radius: 32px;
-    padding: 22px;
-    box-shadow: var(--shadow);
+    padding: 24px;
+    box-shadow: var(--shadow), var(--inner-light);
     margin-top: 18px;
 }
 
+.section-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(255,255,255,0.06), transparent 26%, transparent 74%, rgba(79,70,229,0.04));
+    pointer-events: none;
+}
+
 .section-kicker {
-    color: #a78bfa;
+    color: #c4b5fd;
     font-size: 12px;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     margin-bottom: 8px;
 }
 
 .section-title {
     color: white;
-    font-size: clamp(26px, 3vw, 34px);
+    font-size: clamp(28px, 3vw, 38px);
     font-weight: 850;
-    letter-spacing: -0.02em;
-    margin-bottom: 6px;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
 }
 
 .section-subtitle {
     color: var(--muted);
     font-size: 15px;
-    line-height: 1.8;
-    margin-bottom: 18px;
+    line-height: 1.85;
+    margin-bottom: 20px;
+    max-width: 1100px;
 }
 
-.split-grid {
+.full-width-grid {
     display: grid;
-    grid-template-columns: minmax(340px, 0.95fr) minmax(0, 1.05fr);
-    gap: 20px;
+    grid-template-columns: 1fr;
+    gap: 18px;
     align-items: start;
 }
 
@@ -729,33 +804,60 @@ button, a, [role="button"] {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    width: 100%;
 }
 
 .glass-card {
+    position: relative;
     border: 1px solid var(--border);
-    background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04));
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
     backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
     border-radius: 28px;
-    box-shadow: var(--shadow-soft);
-    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    box-shadow: var(--shadow-soft), var(--inner-light);
+    transform-style: preserve-3d;
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+}
+
+.glass-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(255,255,255,0.10), transparent 35%, transparent 68%, rgba(255,255,255,0.03));
+    pointer-events: none;
 }
 
 .glass-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 18px 34px rgba(0,0,0,0.24), 0 0 24px rgba(124,58,237,0.08);
-    border-color: rgba(167,139,250,0.22);
+    transform: translateY(-4px);
+    box-shadow: 0 22px 46px rgba(0,0,0,0.30), 0 0 28px rgba(124,58,237,0.10);
+    border-color: rgba(196,181,253,0.24);
+}
+
+.clay-card,
+.info-card,
+.mini-panel,
+.summary-item-card {
+    background:
+        linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow:
+        inset 1px 1px 0 rgba(255,255,255,0.10),
+        inset -1px -1px 0 rgba(0,0,0,0.08),
+        0 10px 24px rgba(0,0,0,0.18);
 }
 
 .upload-card,
 .action-card {
-    padding: 22px;
+    padding: 24px;
     text-align: center;
 }
 
 .summary-card,
 .output-card,
 .progress-card {
-    padding: 20px;
+    padding: 22px;
 }
 
 .summary-top {
@@ -775,12 +877,10 @@ button, a, [role="button"] {
 .summary-item-card {
     padding: 16px 18px;
     border-radius: 22px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
 }
 
 .summary-item-label {
-    color: #a5b4fc;
+    color: #c7d2fe;
     font-size: 12px;
     font-weight: 800;
     margin-bottom: 10px;
@@ -803,21 +903,22 @@ button, a, [role="button"] {
 .stack-list li {
     color: #d8e1f8;
     margin-bottom: 8px;
-    line-height: 1.6;
+    line-height: 1.65;
     font-size: 14px;
 }
 
 .upload-title {
     color: white;
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 850;
     margin-bottom: 8px;
+    letter-spacing: -0.03em;
 }
 
 .upload-text {
     color: var(--muted);
     font-size: 15px;
-    line-height: 1.8;
+    line-height: 1.85;
     margin-bottom: 12px;
 }
 
@@ -825,19 +926,20 @@ button, a, [role="button"] {
     display: inline-flex;
     padding: 8px 12px;
     border-radius: 999px;
-    background: rgba(124,58,237,0.14);
-    border: 1px solid rgba(167,139,250,0.22);
-    color: #e9d5ff;
+    background: linear-gradient(135deg, rgba(139,92,246,0.18), rgba(79,70,229,0.16));
+    border: 1px solid rgba(196,181,253,0.22);
+    color: #efe8ff;
     font-size: 12px;
     font-weight: 700;
+    box-shadow: var(--inner-light);
 }
 
 .eyebrow {
-    color: #a78bfa;
+    color: #c4b5fd;
     font-size: 11px;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     margin-bottom: 8px;
 }
 
@@ -846,6 +948,7 @@ button, a, [role="button"] {
     font-size: 22px;
     font-weight: 800;
     margin-bottom: 10px;
+    letter-spacing: -0.02em;
 }
 
 .card-title.small {
@@ -855,7 +958,7 @@ button, a, [role="button"] {
 .card-text {
     color: #d7e0fb;
     font-size: 14px;
-    line-height: 1.85;
+    line-height: 1.9;
 }
 
 .preserve-lines {
@@ -873,13 +976,11 @@ button, a, [role="button"] {
 .mini-panel {
     padding: 14px;
     border-radius: 22px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
 }
 
 .info-label,
 .mini-title {
-    color: #a5b4fc;
+    color: #c7d2fe;
     font-size: 12px;
     font-weight: 800;
     margin-bottom: 8px;
@@ -908,11 +1009,12 @@ button, a, [role="button"] {
 .skill-chip {
     padding: 8px 12px;
     border-radius: 999px;
-    background: rgba(124,58,237,0.16);
-    color: #ede9fe;
-    border: 1px solid rgba(167,139,250,0.22);
+    background: linear-gradient(135deg, rgba(139,92,246,0.18), rgba(79,70,229,0.14));
+    color: #f0ebff;
+    border: 1px solid rgba(196,181,253,0.22);
     font-size: 12px;
     font-weight: 700;
+    box-shadow: var(--inner-light);
 }
 
 .mini-panel ul {
@@ -929,8 +1031,8 @@ button, a, [role="button"] {
 
 .question-text {
     color: white;
-    font-size: 18px;
-    line-height: 1.8;
+    font-size: 19px;
+    line-height: 1.85;
     font-weight: 500;
 }
 
@@ -951,11 +1053,12 @@ button, a, [role="button"] {
 .meta-pill {
     padding: 9px 12px;
     border-radius: 999px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.10);
-    color: #e2e8f0;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #eef2ff;
     font-size: 12px;
     font-weight: 700;
+    box-shadow: var(--inner-light);
 }
 
 .progress-track {
@@ -970,7 +1073,7 @@ button, a, [role="button"] {
 .progress-fill {
     height: 100%;
     border-radius: 999px;
-    background: linear-gradient(90deg, #7c3aed, #4f46e5, #06b6d4);
+    background: linear-gradient(90deg, #8b5cf6, #4f46e5, #22d3ee);
     box-shadow: 0 0 28px rgba(99,102,241,0.52);
     transition: width 0.35s ease;
 }
@@ -983,60 +1086,47 @@ button, a, [role="button"] {
 
 .timeline-vertical {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    padding-left: 26px;
-}
-
-.timeline-vertical::before {
-    content: "";
-    position: absolute;
-    left: 9px;
-    top: 12px;
-    bottom: 12px;
-    width: 4px;
-    border-radius: 999px;
-    background: linear-gradient(180deg, rgba(124,58,237,0.95), rgba(79,70,229,0.9), rgba(6,182,212,0.95));
-    box-shadow:
-        0 0 16px rgba(124,58,237,0.9),
-        0 0 28px rgba(79,70,229,0.6),
-        0 0 40px rgba(6,182,212,0.35);
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    width: 100%;
 }
 
 .timeline-node {
     position: relative;
     border: 1px solid var(--border);
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(14px);
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+    backdrop-filter: blur(16px);
     border-radius: 24px;
-    padding: 18px 18px 18px 20px;
-    box-shadow: var(--shadow-soft);
-    transition: all 0.22s ease;
+    padding: 18px 18px 18px 18px;
+    box-shadow: var(--shadow-soft), var(--inner-light);
+    transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
 }
 
 .timeline-node::before {
     content: "";
     position: absolute;
-    left: -25px;
-    top: 26px;
-    width: 16px;
-    height: 16px;
-    border-radius: 999px;
-    background: radial-gradient(circle, #ffffff 0%, #8b5cf6 45%, #4f46e5 75%, #06b6d4 100%);
-    box-shadow:
-        0 0 10px rgba(255,255,255,0.95),
-        0 0 24px rgba(124,58,237,0.8),
-        0 0 36px rgba(79,70,229,0.55);
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(139,92,246,0.35), rgba(79,70,229,0.10), rgba(34,211,238,0.20));
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
 }
 
 .timeline-node:hover {
-    transform: translateX(4px);
+    transform: translateY(-4px);
     box-shadow: 0 18px 34px rgba(0,0,0,0.24), 0 0 24px rgba(124,58,237,0.12);
+    border-color: rgba(196,181,253,0.22);
 }
 
 .timeline-step {
-    color: #a78bfa;
+    color: #c4b5fd;
     font-size: 12px;
     font-weight: 800;
     text-transform: uppercase;
@@ -1054,44 +1144,46 @@ button, a, [role="button"] {
 .timeline-text {
     color: var(--muted);
     font-size: 14px;
-    line-height: 1.75;
+    line-height: 1.8;
 }
 
 .results-hero {
-    padding: 22px;
+    padding: 24px;
     display: grid;
-    grid-template-columns: minmax(220px, 240px) minmax(0, 1fr);
-    gap: 18px;
+    grid-template-columns: minmax(220px, 250px) minmax(0, 1fr);
+    gap: 22px;
     align-items: center;
 }
 
 .score-orb {
-    width: 210px;
-    height: 210px;
+    width: 220px;
+    height: 220px;
     border-radius: 999px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     background:
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.20), transparent 35%),
-        linear-gradient(135deg, rgba(124,58,237,0.55), rgba(79,70,229,0.42));
+        radial-gradient(circle at 30% 28%, rgba(255,255,255,0.26), transparent 34%),
+        linear-gradient(135deg, rgba(139,92,246,0.56), rgba(79,70,229,0.42), rgba(34,211,238,0.22));
     border: 1px solid rgba(255,255,255,0.14);
     box-shadow:
-        0 0 42px rgba(124,58,237,0.35),
-        inset 0 0 30px rgba(255,255,255,0.08);
+        0 0 46px rgba(124,58,237,0.30),
+        inset 0 0 30px rgba(255,255,255,0.08),
+        var(--inner-light);
+    margin: 0 auto;
 }
 
 .score-number {
     color: white;
-    font-size: 58px;
+    font-size: 60px;
     font-weight: 900;
     line-height: 1;
 }
 
 .score-label {
     margin-top: 10px;
-    color: #e9d5ff;
+    color: #efe8ff;
     font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
@@ -1108,8 +1200,9 @@ button, a, [role="button"] {
 .empty-card {
     padding: 28px 20px;
     border-radius: 28px;
-    border: 1px dashed rgba(255,255,255,0.14);
+    border: 1px dashed rgba(255,255,255,0.16);
     background: rgba(255,255,255,0.03);
+    box-shadow: var(--inner-light);
 }
 
 .empty-title {
@@ -1122,7 +1215,7 @@ button, a, [role="button"] {
 .empty-text {
     color: var(--muted);
     font-size: 14px;
-    line-height: 1.75;
+    line-height: 1.8;
 }
 
 footer {
@@ -1130,37 +1223,57 @@ footer {
 }
 
 .gr-button, button {
+    position: relative;
+    overflow: hidden !important;
     border-radius: 18px !important;
-    border: 1px solid rgba(255,255,255,0.10) !important;
-    background: linear-gradient(135deg, rgba(124,58,237,0.92), rgba(79,70,229,0.92)) !important;
+    border: 1px solid rgba(255,255,255,0.12) !important;
+    background:
+        linear-gradient(135deg, rgba(139,92,246,0.96), rgba(79,70,229,0.94), rgba(34,211,238,0.85)) !important;
     color: white !important;
     font-weight: 800 !important;
     letter-spacing: 0.02em;
     box-shadow:
-        0 12px 30px rgba(79,70,229,0.30),
-        0 0 24px rgba(124,58,237,0.20) !important;
-    transition: all 0.2s ease !important;
+        0 14px 30px rgba(79,70,229,0.28),
+        0 0 24px rgba(139,92,246,0.18),
+        inset 0 1px 0 rgba(255,255,255,0.14) !important;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease !important;
+}
+
+.gr-button::before, button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 15%, rgba(255,255,255,0.28) 45%, transparent 75%);
+    transform: translateX(-130%);
+    transition: transform 0.7s ease;
+    pointer-events: none;
+}
+
+.gr-button:hover::before, button:hover::before {
+    transform: translateX(130%);
 }
 
 .gr-button:hover, button:hover {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
     box-shadow:
-        0 16px 34px rgba(79,70,229,0.38),
-        0 0 32px rgba(124,58,237,0.34) !important;
+        0 18px 34px rgba(79,70,229,0.36),
+        0 0 34px rgba(124,58,237,0.28),
+        inset 0 1px 0 rgba(255,255,255,0.16) !important;
+    filter: brightness(1.03);
 }
 
 .upload-resume-btn button {
-    min-height: 58px !important;
-    height: 58px !important;
+    min-height: 60px !important;
+    height: 60px !important;
     width: 100% !important;
-    border-radius: 18px !important;
+    border-radius: 20px !important;
     font-size: 16px !important;
 }
 
 .small-action button,
 .small-download button {
-    min-height: 46px !important;
-    height: 46px !important;
+    min-height: 48px !important;
+    height: 48px !important;
     width: 100% !important;
     border-radius: 16px !important;
     font-size: 14px !important;
@@ -1171,10 +1284,17 @@ input, textarea, .gr-box, .gr-input, .gr-textbox, .gr-dropdown, .gr-file, .gr-au
 }
 
 textarea, input, .wrap, .gr-box, .gr-form, .gr-file, .gr-audio, .gr-dropdown, .gr-textbox {
-    background: rgba(255,255,255,0.05) !important;
+    background: rgba(255,255,255,0.06) !important;
     color: white !important;
-    border: 1px solid rgba(255,255,255,0.10) !important;
-    box-shadow: none !important;
+    border: 1px solid rgba(255,255,255,0.12) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08) !important;
+}
+
+textarea:focus, input:focus {
+    border-color: rgba(196,181,253,0.35) !important;
+    box-shadow:
+        0 0 0 2px rgba(139,92,246,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.08) !important;
 }
 
 label, .gr-form > label, .gr-block-label {
@@ -1183,14 +1303,15 @@ label, .gr-form > label, .gr-block-label {
 }
 
 ::placeholder {
-    color: #94a3b8 !important;
+    color: #9fb2d6 !important;
 }
 
 .gr-chatbot {
     border-radius: 28px !important;
-    border: 1px solid rgba(255,255,255,0.10) !important;
+    border: 1px solid rgba(255,255,255,0.12) !important;
     background: rgba(255,255,255,0.05) !important;
     overflow: hidden !important;
+    box-shadow: var(--shadow-soft), var(--inner-light);
 }
 
 .message-row .message, .bubble {
@@ -1199,7 +1320,7 @@ label, .gr-form > label, .gr-block-label {
 
 .control-row {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;
 }
 
@@ -1207,14 +1328,31 @@ label, .gr-form > label, .gr-block-label {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    align-items: flex-start;
+    align-items: stretch;
     width: 100%;
     margin-top: 18px;
 }
 
+.reveal-up {
+    opacity: 0;
+    transform: translateY(34px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(.2,.8,.2,1);
+    will-change: opacity, transform;
+}
+
+.reveal-up.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 1280px) {
+    .timeline-vertical {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
 @media (max-width: 1100px) {
     .hero-grid,
-    .split-grid,
     .dashboard-grid,
     .results-hero,
     .info-grid,
@@ -1224,14 +1362,13 @@ label, .gr-form > label, .gr-block-label {
         flex-direction: column;
     }
 
-    .timeline-vertical {
-        padding-left: 22px;
+    .hero-side {
+        min-height: auto;
     }
 
     .score-orb {
-        width: 180px;
-        height: 180px;
-        margin: 0 auto;
+        width: 190px;
+        height: 190px;
     }
 }
 
@@ -1247,12 +1384,12 @@ label, .gr-form > label, .gr-block-label {
     }
 
     .hero-title {
-        font-size: 38px;
+        font-size: 40px;
     }
 
     .hero-subtitle {
         font-size: 15px;
-        line-height: 1.7;
+        line-height: 1.75;
     }
 
     .section-title {
@@ -1261,6 +1398,33 @@ label, .gr-form > label, .gr-block-label {
 
     .card-title {
         font-size: 20px;
+    }
+
+    .timeline-vertical,
+    .dashboard-grid,
+    .control-row {
+        grid-template-columns: 1fr !important;
+    }
+
+    .results-hero {
+        grid-template-columns: 1fr !important;
+        text-align: left;
+    }
+
+    .question-text {
+        font-size: 17px;
+    }
+
+    .upload-title {
+        font-size: 26px;
+    }
+
+    .summary-card,
+    .output-card,
+    .progress-card,
+    .upload-card,
+    .action-card {
+        padding: 18px;
     }
 }
 """
@@ -1271,6 +1435,36 @@ document.addEventListener("mousemove", function(e){
   document.documentElement.style.setProperty("--mx", e.clientX + "px");
   document.documentElement.style.setProperty("--my", e.clientY + "px");
 });
+
+(function(){
+  const applyReveal = () => {
+    const items = document.querySelectorAll('.reveal-up');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    items.forEach((item) => observer.observe(item));
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", applyReveal);
+  } else {
+    applyReveal();
+  }
+
+  const rerunReveal = () => {
+    document.querySelectorAll('.reveal-up').forEach((el, idx) => {
+      setTimeout(() => el.classList.add('is-visible'), idx * 40);
+    });
+  };
+
+  setTimeout(rerunReveal, 500);
+  document.addEventListener("click", () => setTimeout(rerunReveal, 500));
+})();
 </script>
 """
 
@@ -1289,7 +1483,7 @@ with gr.Blocks(theme=theme, css=custom_css) as demo:
 
     gr.HTML(
         """
-        <div class="main-shell">
+        <div class="main-shell reveal-up">
             <div class="hero-wrap">
                 <div class="hero-grid">
                     <div>
@@ -1300,11 +1494,12 @@ with gr.Blocks(theme=theme, css=custom_css) as demo:
                             resume intelligence, voice support, performance analytics, and PDF reporting.
                         </div>
                         <div class="hero-pills">
-                            <div class="hero-pill">Neon Glass UI</div>
-                            <div class="hero-pill">Auto Role Detection</div>
-                            <div class="hero-pill">Fast Resume Parsing</div>
-                            <div class="hero-pill">Interview Runtime</div>
-                            <div class="hero-pill">PDF Reports</div>
+                            <div class="hero-pill">Full-Screen Flow</div>
+                            <div class="hero-pill">Glass Morphism</div>
+                            <div class="hero-pill">Clay Morphism</div>
+                            <div class="hero-pill">Smooth Scroll</div>
+                            <div class="hero-pill">Scroll Reveal</div>
+                            <div class="hero-pill">3D Premium Depth</div>
                         </div>
                     </div>
                     <div class="hero-side">
@@ -1336,22 +1531,23 @@ with gr.Blocks(theme=theme, css=custom_css) as demo:
         """
     )
 
-    with gr.Column(elem_classes=["section-shell"]):
+    with gr.Column(elem_classes=["section-shell", "reveal-up"]):
         gr.HTML(
             """
             <div class="section-kicker">Top Layout</div>
-            <div class="section-title">Split-Screen Workspace</div>
+            <div class="section-title">Full-Screen Resume Workspace</div>
             <div class="section-subtitle">
-                Left side for user input. Right side for the visual process timeline with glowing connected steps.
+                No split screen. Everything flows in a clean full-width layout with premium cards,
+                smooth transitions, better readability, and stronger mobile responsiveness.
             </div>
             """
         )
 
-        with gr.Row(elem_classes=["split-grid"]):
+        with gr.Row(elem_classes=["full-width-grid"]):
             with gr.Column(elem_classes=["input-panel"]):
                 gr.HTML(
                     """
-                    <div class="glass-card upload-card">
+                    <div class="glass-card upload-card reveal-up">
                         <div class="upload-title">Resume Upload</div>
                         <div class="upload-text">
                             Upload your PDF resume. The system will automatically detect the best-fit role for the interview.
@@ -1370,7 +1566,7 @@ with gr.Blocks(theme=theme, css=custom_css) as demo:
 
                 gr.HTML(
                     """
-                    <div class="glass-card action-card">
+                    <div class="glass-card action-card reveal-up">
                         <div class="upload-text" style="margin-bottom: 0;">
                             Click Analyze Resume to generate a clean structured summary with contact details, skills, experience, projects, and education.
                         </div>
@@ -1391,7 +1587,7 @@ with gr.Blocks(theme=theme, css=custom_css) as demo:
             with gr.Column(elem_classes=["output-panel"]):
                 gr.HTML(
                     """
-                    <div class="timeline-vertical">
+                    <div class="timeline-vertical reveal-up">
                         <div class="timeline-node">
                             <div class="timeline-step">Step 01</div>
                             <div class="timeline-title">Upload Resume</div>
@@ -1416,13 +1612,13 @@ with gr.Blocks(theme=theme, css=custom_css) as demo:
                     """
                 )
 
-    with gr.Column(elem_classes=["section-shell"]):
+    with gr.Column(elem_classes=["section-shell", "reveal-up"]):
         gr.HTML(
             """
             <div class="section-kicker">Middle Layout</div>
             <div class="section-title">Interview Workspace</div>
             <div class="section-subtitle">
-                Start the interview, answer questions by text or voice, and track your progress in one clean section.
+                Start the interview, answer questions by text or voice, and track your progress in one clean full-width section.
             </div>
             """
         )
@@ -1484,7 +1680,7 @@ with gr.Blocks(theme=theme, css=custom_css) as demo:
             elem_classes=["small-action"],
         )
 
-    with gr.Column(elem_classes=["section-shell"]):
+    with gr.Column(elem_classes=["section-shell", "reveal-up"]):
         gr.HTML(
             """
             <div class="section-kicker">Bottom Layout</div>
