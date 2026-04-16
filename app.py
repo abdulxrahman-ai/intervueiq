@@ -65,7 +65,7 @@ def normalize_items(items, fallback="None"):
 
 def render_empty_card(title, subtitle):
     return f"""
-    <div class="empty-card reveal-up">
+    <div class="empty-card reveal">
         <div class="empty-title">{html.escape(title)}</div>
         <div class="empty-text">{html.escape(subtitle)}</div>
     </div>
@@ -97,7 +97,7 @@ def render_analysis_dashboard(profile, inferred_role):
     education_html = "".join(f"<li>{html.escape(item)}</li>" for item in education[:3])
 
     return f"""
-    <div class="glass-card summary-card reveal-up">
+    <div class="glass-card summary-card reveal">
         <div class="eyebrow">Resume Intelligence</div>
         <div class="summary-top">
             <div>
@@ -111,32 +111,32 @@ def render_analysis_dashboard(profile, inferred_role):
         </div>
 
         <div class="summary-stack">
-            <div class="summary-item-card clay-card">
+            <div class="summary-item-card">
                 <div class="summary-item-label">Email</div>
                 <div class="summary-item-value">{email}</div>
             </div>
 
-            <div class="summary-item-card clay-card">
+            <div class="summary-item-card">
                 <div class="summary-item-label">Phone</div>
                 <div class="summary-item-value">{phone}</div>
             </div>
 
-            <div class="summary-item-card clay-card">
+            <div class="summary-item-card">
                 <div class="summary-item-label">Skills</div>
                 <div class="skills-wrap compact">{skills_html}</div>
             </div>
 
-            <div class="summary-item-card clay-card">
+            <div class="summary-item-card">
                 <div class="summary-item-label">Experience</div>
                 <ul class="stack-list">{experience_html}</ul>
             </div>
 
-            <div class="summary-item-card clay-card">
+            <div class="summary-item-card">
                 <div class="summary-item-label">Projects</div>
                 <ul class="stack-list">{projects_html}</ul>
             </div>
 
-            <div class="summary-item-card clay-card">
+            <div class="summary-item-card">
                 <div class="summary-item-label">Education</div>
                 <ul class="stack-list">{education_html}</ul>
             </div>
@@ -161,7 +161,7 @@ def render_progress(progress):
         status_text = "Interview not started"
 
     return f"""
-    <div class="glass-card progress-card reveal-up">
+    <div class="glass-card progress-card reveal">
         <div class="progress-top">
             <div>
                 <div class="eyebrow">Live Progress</div>
@@ -189,7 +189,7 @@ def render_question_card(question_text):
         )
 
     return f"""
-    <div class="glass-card output-card reveal-up">
+    <div class="glass-card output-card reveal">
         <div class="eyebrow">Current Question</div>
         <div class="card-title">Interview Prompt</div>
         <div class="question-text">{html.escape(question_text)}</div>
@@ -209,7 +209,7 @@ def render_report_overview(report, runtime):
     summary = report.get("overall_summary", "No summary available.")
 
     return f"""
-    <div class="results-hero glass-card reveal-up">
+    <div class="results-hero glass-card reveal">
         <div class="score-orb">
             <div class="score-number">{html.escape(str(average_score))}</div>
             <div class="score-label">Average Score</div>
@@ -233,7 +233,7 @@ def render_text_panel(title, eyebrow, body_text):
         return render_empty_card(title, f"{title} will appear here once available.")
 
     return f"""
-    <div class="glass-card output-card reveal-up">
+    <div class="glass-card output-card reveal">
         <div class="eyebrow">{html.escape(eyebrow)}</div>
         <div class="card-title">{html.escape(title)}</div>
         <div class="card-text preserve-lines">{html.escape(body_text)}</div>
@@ -342,9 +342,9 @@ def handle_answer(runtime, answer, chat_history):
     updated_runtime, evaluation, next_question = submit_answer(runtime, answer)
 
     feedback_text = (
-        f"Score: {evaluation.get('overall_score', 0)}/100\n\n"
-        f"Feedback: {evaluation.get('feedback', 'No feedback available.')}\n\n"
-        f"Strengths: {', '.join(evaluation.get('strengths', [])) or 'None'}\n\n"
+        f"Score: {evaluation.get('overall_score', 0)}/100\\n\\n"
+        f"Feedback: {evaluation.get('feedback', 'No feedback available.')}\\n\\n"
+        f"Strengths: {', '.join(evaluation.get('strengths', [])) or 'None'}\\n\\n"
         f"Improvements: {', '.join(evaluation.get('improvements', [])) or 'None'}"
     )
 
@@ -425,24 +425,24 @@ def generate_report(runtime):
         role=session_data["role"],
     )
 
-    strengths_text = "\n- ".join(report.get("top_strengths", [])) if report.get("top_strengths") else "None"
+    strengths_text = "\\n- ".join(report.get("top_strengths", [])) if report.get("top_strengths") else "None"
     improve_text = (
-        "\n- ".join(report.get("top_improvement_areas", []))
+        "\\n- ".join(report.get("top_improvement_areas", []))
         if report.get("top_improvement_areas")
         else "None"
     )
     steps_text = (
-        "\n- ".join(report.get("recommended_next_steps", []))
+        "\\n- ".join(report.get("recommended_next_steps", []))
         if report.get("recommended_next_steps")
         else "None"
     )
 
     report_text = (
-        f"Average Score: {report.get('average_score', 0)}\n\n"
-        f"Summary: {report.get('overall_summary', '')}\n\n"
-        f"Top Strengths:\n- {strengths_text}\n\n"
-        f"Top Improvement Areas:\n- {improve_text}\n\n"
-        f"Recommended Next Steps:\n- {steps_text}"
+        f"Average Score: {report.get('average_score', 0)}\\n\\n"
+        f"Summary: {report.get('overall_summary', '')}\\n\\n"
+        f"Top Strengths:\\n- {strengths_text}\\n\\n"
+        f"Top Improvement Areas:\\n- {improve_text}\\n\\n"
+        f"Recommended Next Steps:\\n- {steps_text}"
     )
 
     comparison_text = format_comparison_text(comparison)
@@ -476,10 +476,10 @@ def send_email_action(email_input, report_text, comparison_text):
         return "Please enter an email address."
 
     body = (
-        "Your IntervueIQ Interview Report\n\n"
-        f"{report_text}\n\n"
-        "Comparison Summary\n"
-        f"{comparison_text}\n"
+        "Your IntervueIQ Interview Report\\n\\n"
+        f"{report_text}\\n\\n"
+        "Comparison Summary\\n"
+        f"{comparison_text}\\n"
     )
 
     return send_report_email(
@@ -498,23 +498,6 @@ theme = gr.themes.Soft(
 custom_css = """
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-:root {
-    --bg-1: #030712;
-    --bg-2: #07111f;
-    --bg-3: #0b1730;
-    --panel: rgba(255,255,255,0.08);
-    --panel-2: rgba(255,255,255,0.05);
-    --border: rgba(255,255,255,0.14);
-    --text: #eef2ff;
-    --muted: #bfd0ea;
-    --purple: #8b5cf6;
-    --indigo: #4f46e5;
-    --cyan: #22d3ee;
-    --shadow: 0 24px 70px rgba(0,0,0,0.45);
-    --shadow-soft: 0 16px 40px rgba(0,0,0,0.28);
-    --inner-light: inset 1px 1px 0 rgba(255,255,255,0.12), inset -1px -1px 0 rgba(255,255,255,0.02);
-}
-
 * {
     font-family: 'Inter', sans-serif !important;
     box-sizing: border-box;
@@ -524,72 +507,22 @@ html {
     scroll-behavior: smooth;
 }
 
-html, body, .gradio-container {
+body, html, .gradio-container {
+    margin: 0 !important;
     min-height: 100%;
     background:
-        radial-gradient(circle at 12% 14%, rgba(139,92,246,0.24), transparent 18%),
-        radial-gradient(circle at 88% 12%, rgba(79,70,229,0.22), transparent 20%),
-        radial-gradient(circle at 82% 72%, rgba(34,211,238,0.14), transparent 22%),
-        radial-gradient(circle at 24% 86%, rgba(99,102,241,0.10), transparent 18%),
-        linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 40%, var(--bg-3) 100%) !important;
-    color: var(--text) !important;
+        radial-gradient(circle at 12% 16%, rgba(139,92,246,0.26), transparent 18%),
+        radial-gradient(circle at 88% 10%, rgba(79,70,229,0.22), transparent 20%),
+        radial-gradient(circle at 84% 78%, rgba(34,211,238,0.16), transparent 22%),
+        linear-gradient(180deg, #030712 0%, #07111f 45%, #0a1830 100%) !important;
+    color: #eef2ff !important;
     overflow-x: hidden !important;
 }
 
-body {
-    margin: 0 !important;
-}
-
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background:
-        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
-    background-size: 36px 36px;
-    mask-image: radial-gradient(circle at center, rgba(0,0,0,0.9), transparent 85%);
-    pointer-events: none;
-    z-index: 0;
-}
-
-body::after {
-    content: "";
-    position: fixed;
-    width: 320px;
-    height: 320px;
-    left: var(--mx, 50vw);
-    top: var(--my, 50vh);
-    transform: translate(-50%, -50%);
-    background: radial-gradient(circle, rgba(139,92,246,0.14), rgba(79,70,229,0.07) 38%, transparent 72%);
-    filter: blur(20px);
-    pointer-events: none;
-    z-index: 0;
-}
-
-button, a, [role="button"] {
-    cursor: pointer !important;
-}
-
 .gradio-container {
-    position: relative;
-    z-index: 1;
     width: 100% !important;
     max-width: 100% !important;
-    margin: 0 auto !important;
-    padding: 18px 18px 34px 18px !important;
-}
-
-.main-shell,
-.hero-wrap,
-.section-shell,
-.glass-card,
-.timeline-node,
-.summary-item-card,
-.info-card,
-.mini-panel,
-.empty-card {
-    overflow: visible !important;
+    padding: 18px !important;
 }
 
 .main-shell {
@@ -597,32 +530,20 @@ button, a, [role="button"] {
 }
 
 .hero-wrap {
-    position: relative;
-    border: 1px solid var(--border);
-    background:
-        linear-gradient(135deg, rgba(255,255,255,0.13), rgba(255,255,255,0.05)),
-        rgba(255,255,255,0.03);
-    backdrop-filter: blur(26px);
-    -webkit-backdrop-filter: blur(26px);
+    width: 100%;
     border-radius: 34px;
-    padding: 34px;
-    box-shadow: var(--shadow), var(--inner-light);
+    border: 1px solid rgba(255,255,255,0.14);
+    background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+    padding: 32px;
     margin-bottom: 18px;
-}
-
-.hero-wrap::before {
-    content: "";
-    position: absolute;
-    inset: 1px;
-    border-radius: inherit;
-    background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent 28%, transparent 72%, rgba(255,255,255,0.04));
-    pointer-events: none;
-    opacity: 0.9;
 }
 
 .hero-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.95fr);
+    grid-template-columns: 1.45fr 0.95fr;
     gap: 24px;
     align-items: stretch;
 }
@@ -631,33 +552,30 @@ button, a, [role="button"] {
     display: inline-flex;
     padding: 10px 16px;
     border-radius: 999px;
+    background: linear-gradient(135deg, rgba(139,92,246,0.22), rgba(79,70,229,0.16));
+    border: 1px solid rgba(196,181,253,0.24);
     color: #f5e8ff;
     font-weight: 800;
     font-size: 12px;
-    text-transform: uppercase;
     letter-spacing: 0.08em;
-    border: 1px solid rgba(196,181,253,0.26);
-    background: linear-gradient(135deg, rgba(139,92,246,0.22), rgba(79,70,229,0.14));
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+    text-transform: uppercase;
     margin-bottom: 18px;
 }
 
 .hero-title {
-    font-size: clamp(42px, 7vw, 84px);
+    font-size: clamp(42px, 7vw, 82px);
     line-height: 0.98;
     font-weight: 900;
     margin: 0;
     color: white;
     letter-spacing: -0.05em;
-    text-shadow: 0 10px 40px rgba(79,70,229,0.25);
 }
 
 .hero-subtitle {
     margin-top: 18px;
+    color: #dbe4ff;
     font-size: 18px;
     line-height: 1.9;
-    color: #dce8ff;
-    max-width: 920px;
 }
 
 .hero-pills {
@@ -668,43 +586,30 @@ button, a, [role="button"] {
 }
 
 .hero-pill {
+    padding: 10px 14px;
     border-radius: 999px;
-    padding: 11px 15px;
     background: rgba(255,255,255,0.07);
-    border: 1px solid var(--border);
-    color: #e7ecff;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #eef2ff;
     font-size: 13px;
     font-weight: 700;
-    box-shadow: var(--inner-light);
-    transform-style: preserve-3d;
-    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .hero-pill:hover {
-    transform: translateY(-3px) translateZ(0);
-    box-shadow: 0 12px 28px rgba(79,70,229,0.22);
-    border-color: rgba(196,181,253,0.28);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px rgba(79,70,229,0.22);
 }
 
 .hero-side {
-    position: relative;
-    border-radius: 30px;
+    border-radius: 28px;
     border: 1px solid rgba(255,255,255,0.14);
-    background:
-        linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
+    background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
     backdrop-filter: blur(22px);
     -webkit-backdrop-filter: blur(22px);
     padding: 24px;
-    box-shadow: var(--shadow-soft), var(--inner-light);
-}
-
-.hero-side::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(135deg, rgba(255,255,255,0.09), transparent 35%, transparent 65%, rgba(34,211,238,0.05));
-    pointer-events: none;
+    box-shadow: 0 16px 36px rgba(0,0,0,0.24);
 }
 
 .hero-side-title {
@@ -717,12 +622,12 @@ button, a, [role="button"] {
 .hero-side-text {
     color: #d6def8;
     font-size: 14px;
-    line-height: 1.9;
+    line-height: 1.85;
 }
 
 .skills-heading {
     margin-top: 16px;
-    color: #ffffff;
+    color: white;
     font-size: 13px;
     font-weight: 800;
 }
@@ -734,37 +639,27 @@ button, a, [role="button"] {
     margin-top: 12px;
 }
 
-.about-chip {
+.about-chip,
+.skill-chip {
     padding: 8px 12px;
     border-radius: 999px;
-    background: linear-gradient(135deg, rgba(139,92,246,0.16), rgba(79,70,229,0.14));
-    color: #f0ebff;
+    background: linear-gradient(135deg, rgba(139,92,246,0.18), rgba(79,70,229,0.15));
     border: 1px solid rgba(196,181,253,0.22);
+    color: #f1ecff;
     font-size: 12px;
     font-weight: 700;
-    box-shadow: var(--inner-light);
 }
 
 .section-shell {
-    position: relative;
-    border: 1px solid var(--border);
-    background:
-        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 32px;
+    width: 100%;
+    border-radius: 30px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.28);
     padding: 24px;
-    box-shadow: var(--shadow), var(--inner-light);
     margin-top: 18px;
-}
-
-.section-shell::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(135deg, rgba(255,255,255,0.06), transparent 26%, transparent 74%, rgba(79,70,229,0.04));
-    pointer-events: none;
 }
 
 .section-kicker {
@@ -772,7 +667,7 @@ button, a, [role="button"] {
     font-size: 12px;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     margin-bottom: 8px;
 }
 
@@ -785,82 +680,47 @@ button, a, [role="button"] {
 }
 
 .section-subtitle {
-    color: var(--muted);
+    color: #bfd0ea;
     font-size: 15px;
     line-height: 1.85;
     margin-bottom: 20px;
-    max-width: 1100px;
-}
-
-.full-width-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 18px;
-    align-items: start;
-}
-
-.input-panel,
-.output-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    width: 100%;
 }
 
 .glass-card {
-    position: relative;
-    border: 1px solid var(--border);
-    background:
-        linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
+    width: 100%;
+    border-radius: 28px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
-    border-radius: 28px;
-    box-shadow: var(--shadow-soft), var(--inner-light);
-    transform-style: preserve-3d;
-    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
-}
-
-.glass-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(135deg, rgba(255,255,255,0.10), transparent 35%, transparent 68%, rgba(255,255,255,0.03));
-    pointer-events: none;
+    box-shadow: 0 14px 34px rgba(0,0,0,0.24);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .glass-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 22px 46px rgba(0,0,0,0.30), 0 0 28px rgba(124,58,237,0.10);
-    border-color: rgba(196,181,253,0.24);
-}
-
-.clay-card,
-.info-card,
-.mini-panel,
-.summary-item-card {
-    background:
-        linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
-    border: 1px solid rgba(255,255,255,0.10);
-    box-shadow:
-        inset 1px 1px 0 rgba(255,255,255,0.10),
-        inset -1px -1px 0 rgba(0,0,0,0.08),
-        0 10px 24px rgba(0,0,0,0.18);
+    box-shadow: 0 20px 42px rgba(0,0,0,0.30), 0 0 24px rgba(139,92,246,0.10);
 }
 
 .upload-card,
-.action-card {
-    padding: 24px;
-    text-align: center;
-}
-
+.action-card,
 .summary-card,
 .output-card,
 .progress-card {
     padding: 22px;
 }
 
-.summary-top {
+.summary-item-card,
+.empty-card {
+    border-radius: 22px;
+    background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 10px 24px rgba(0,0,0,0.18);
+    padding: 16px 18px;
+}
+
+.summary-top,
+.progress-top {
     display: flex;
     justify-content: space-between;
     gap: 14px;
@@ -874,73 +734,26 @@ button, a, [role="button"] {
     gap: 14px;
 }
 
-.summary-item-card {
-    padding: 16px 18px;
-    border-radius: 22px;
-}
-
-.summary-item-label {
-    color: #c7d2fe;
-    font-size: 12px;
-    font-weight: 800;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-}
-
-.summary-item-value {
-    color: white;
-    font-size: 14px;
-    line-height: 1.7;
-    word-break: break-word;
-}
-
-.stack-list {
-    margin: 0;
-    padding-left: 18px;
-}
-
-.stack-list li {
-    color: #d8e1f8;
-    margin-bottom: 8px;
-    line-height: 1.65;
-    font-size: 14px;
-}
-
-.upload-title {
-    color: white;
-    font-size: 30px;
-    font-weight: 850;
-    margin-bottom: 8px;
-    letter-spacing: -0.03em;
-}
-
-.upload-text {
-    color: var(--muted);
-    font-size: 15px;
-    line-height: 1.85;
-    margin-bottom: 12px;
-}
-
-.auto-pill {
-    display: inline-flex;
-    padding: 8px 12px;
-    border-radius: 999px;
-    background: linear-gradient(135deg, rgba(139,92,246,0.18), rgba(79,70,229,0.16));
-    border: 1px solid rgba(196,181,253,0.22);
-    color: #efe8ff;
-    font-size: 12px;
-    font-weight: 700;
-    box-shadow: var(--inner-light);
-}
-
+.summary-item-label,
 .eyebrow {
     color: #c4b5fd;
     font-size: 11px;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     margin-bottom: 8px;
+}
+
+.summary-item-value,
+.card-text,
+.empty-text,
+.timeline-text,
+.hero-side-text,
+.stack-list li,
+.progress-foot {
+    color: #d7e0fb;
+    font-size: 14px;
+    line-height: 1.85;
 }
 
 .card-title {
@@ -955,50 +768,37 @@ button, a, [role="button"] {
     font-size: 18px;
 }
 
-.card-text {
-    color: #d7e0fb;
-    font-size: 14px;
-    line-height: 1.9;
-}
-
-.preserve-lines {
-    white-space: pre-wrap;
-}
-
-.info-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    margin-bottom: 16px;
-}
-
-.info-card,
-.mini-panel {
-    padding: 14px;
-    border-radius: 22px;
-}
-
-.info-label,
-.mini-title {
-    color: #c7d2fe;
-    font-size: 12px;
-    font-weight: 800;
+.upload-title {
+    color: white;
+    font-size: 30px;
+    font-weight: 850;
     margin-bottom: 8px;
 }
 
-.info-value {
-    color: white;
-    font-size: 14px;
-    line-height: 1.6;
-    word-break: break-word;
+.upload-text {
+    color: #bfd0ea;
+    font-size: 15px;
+    line-height: 1.85;
+    margin-bottom: 12px;
 }
 
+.auto-pill,
+.meta-pill {
+    display: inline-flex;
+    padding: 9px 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #eef2ff;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.pill-wrap,
 .skills-wrap {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 8px;
-    margin-bottom: 16px;
 }
 
 .skills-wrap.compact {
@@ -1006,27 +806,9 @@ button, a, [role="button"] {
     margin-bottom: 0;
 }
 
-.skill-chip {
-    padding: 8px 12px;
-    border-radius: 999px;
-    background: linear-gradient(135deg, rgba(139,92,246,0.18), rgba(79,70,229,0.14));
-    color: #f0ebff;
-    border: 1px solid rgba(196,181,253,0.22);
-    font-size: 12px;
-    font-weight: 700;
-    box-shadow: var(--inner-light);
-}
-
-.mini-panel ul {
+.stack-list {
     margin: 0;
     padding-left: 18px;
-}
-
-.mini-panel li {
-    color: #d8e1f8;
-    margin-bottom: 8px;
-    line-height: 1.6;
-    font-size: 14px;
 }
 
 .question-text {
@@ -1036,37 +818,12 @@ button, a, [role="button"] {
     font-weight: 500;
 }
 
-.progress-top {
-    display: flex;
-    justify-content: space-between;
-    gap: 14px;
-    align-items: flex-start;
-    margin-bottom: 14px;
-}
-
-.pill-wrap {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.meta-pill {
-    padding: 9px 12px;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.12);
-    color: #eef2ff;
-    font-size: 12px;
-    font-weight: 700;
-    box-shadow: var(--inner-light);
-}
-
 .progress-track {
     width: 100%;
     height: 12px;
     border-radius: 999px;
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.10);
     overflow: hidden;
 }
 
@@ -1074,18 +831,11 @@ button, a, [role="button"] {
     height: 100%;
     border-radius: 999px;
     background: linear-gradient(90deg, #8b5cf6, #4f46e5, #22d3ee);
-    box-shadow: 0 0 28px rgba(99,102,241,0.52);
+    box-shadow: 0 0 24px rgba(99,102,241,0.45);
     transition: width 0.35s ease;
 }
 
-.progress-foot {
-    margin-top: 10px;
-    color: var(--muted);
-    font-size: 13px;
-}
-
-.timeline-vertical {
-    position: relative;
+.timeline-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 16px;
@@ -1093,36 +843,19 @@ button, a, [role="button"] {
 }
 
 .timeline-node {
-    position: relative;
-    border: 1px solid var(--border);
-    background:
-        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
-    backdrop-filter: blur(16px);
     border-radius: 24px;
-    padding: 18px 18px 18px 18px;
-    box-shadow: var(--shadow-soft), var(--inner-light);
-    transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
-}
-
-.timeline-node::before {
-    content: "";
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, rgba(139,92,246,0.35), rgba(79,70,229,0.10), rgba(34,211,238,0.20));
-    -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.04));
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 14px 30px rgba(0,0,0,0.20);
+    padding: 18px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .timeline-node:hover {
     transform: translateY(-4px);
-    box-shadow: 0 18px 34px rgba(0,0,0,0.24), 0 0 24px rgba(124,58,237,0.12);
-    border-color: rgba(196,181,253,0.22);
+    box-shadow: 0 18px 36px rgba(0,0,0,0.24), 0 0 20px rgba(139,92,246,0.10);
 }
 
 .timeline-step {
@@ -1141,17 +874,11 @@ button, a, [role="button"] {
     margin-bottom: 8px;
 }
 
-.timeline-text {
-    color: var(--muted);
-    font-size: 14px;
-    line-height: 1.8;
-}
-
 .results-hero {
     padding: 24px;
     display: grid;
-    grid-template-columns: minmax(220px, 250px) minmax(0, 1fr);
-    gap: 22px;
+    grid-template-columns: 240px 1fr;
+    gap: 20px;
     align-items: center;
 }
 
@@ -1164,13 +891,10 @@ button, a, [role="button"] {
     justify-content: center;
     align-items: center;
     background:
-        radial-gradient(circle at 30% 28%, rgba(255,255,255,0.26), transparent 34%),
-        linear-gradient(135deg, rgba(139,92,246,0.56), rgba(79,70,229,0.42), rgba(34,211,238,0.22));
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.22), transparent 34%),
+        linear-gradient(135deg, rgba(139,92,246,0.56), rgba(79,70,229,0.44), rgba(34,211,238,0.22));
     border: 1px solid rgba(255,255,255,0.14);
-    box-shadow:
-        0 0 46px rgba(124,58,237,0.30),
-        inset 0 0 30px rgba(255,255,255,0.08),
-        var(--inner-light);
+    box-shadow: 0 0 42px rgba(139,92,246,0.26), inset 0 0 28px rgba(255,255,255,0.08);
     margin: 0 auto;
 }
 
@@ -1197,76 +921,44 @@ button, a, [role="button"] {
     margin-top: 16px;
 }
 
-.empty-card {
-    padding: 28px 20px;
-    border-radius: 28px;
-    border: 1px dashed rgba(255,255,255,0.16);
-    background: rgba(255,255,255,0.03);
-    box-shadow: var(--inner-light);
+.control-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
 }
 
-.empty-title {
-    color: white;
-    font-size: 18px;
-    font-weight: 800;
-    margin-bottom: 8px;
+.results-actions-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    margin-top: 18px;
 }
 
-.empty-text {
-    color: var(--muted);
-    font-size: 14px;
-    line-height: 1.8;
-}
-
-footer {
-    display: none !important;
+.preserve-lines {
+    white-space: pre-wrap;
 }
 
 .gr-button, button {
-    position: relative;
-    overflow: hidden !important;
     border-radius: 18px !important;
     border: 1px solid rgba(255,255,255,0.12) !important;
-    background:
-        linear-gradient(135deg, rgba(139,92,246,0.96), rgba(79,70,229,0.94), rgba(34,211,238,0.85)) !important;
+    background: linear-gradient(135deg, rgba(139,92,246,0.96), rgba(79,70,229,0.94), rgba(34,211,238,0.84)) !important;
     color: white !important;
     font-weight: 800 !important;
     letter-spacing: 0.02em;
-    box-shadow:
-        0 14px 30px rgba(79,70,229,0.28),
-        0 0 24px rgba(139,92,246,0.18),
-        inset 0 1px 0 rgba(255,255,255,0.14) !important;
-    transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease !important;
-}
-
-.gr-button::before, button::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(110deg, transparent 15%, rgba(255,255,255,0.28) 45%, transparent 75%);
-    transform: translateX(-130%);
-    transition: transform 0.7s ease;
-    pointer-events: none;
-}
-
-.gr-button:hover::before, button:hover::before {
-    transform: translateX(130%);
+    box-shadow: 0 14px 30px rgba(79,70,229,0.28), 0 0 24px rgba(139,92,246,0.18) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
 }
 
 .gr-button:hover, button:hover {
     transform: translateY(-2px);
-    box-shadow:
-        0 18px 34px rgba(79,70,229,0.36),
-        0 0 34px rgba(124,58,237,0.28),
-        inset 0 1px 0 rgba(255,255,255,0.16) !important;
-    filter: brightness(1.03);
+    box-shadow: 0 18px 34px rgba(79,70,229,0.36), 0 0 30px rgba(139,92,246,0.24) !important;
 }
 
 .upload-resume-btn button {
     min-height: 60px !important;
     height: 60px !important;
     width: 100% !important;
-    border-radius: 20px !important;
     font-size: 16px !important;
 }
 
@@ -1275,26 +967,14 @@ footer {
     min-height: 48px !important;
     height: 48px !important;
     width: 100% !important;
-    border-radius: 16px !important;
     font-size: 14px !important;
 }
 
-input, textarea, .gr-box, .gr-input, .gr-textbox, .gr-dropdown, .gr-file, .gr-audio {
-    border-radius: 20px !important;
-}
-
-textarea, input, .wrap, .gr-box, .gr-form, .gr-file, .gr-audio, .gr-dropdown, .gr-textbox {
+textarea, input, .gr-box, .gr-form, .gr-file, .gr-audio, .gr-dropdown, .gr-textbox {
     background: rgba(255,255,255,0.06) !important;
     color: white !important;
     border: 1px solid rgba(255,255,255,0.12) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08) !important;
-}
-
-textarea:focus, input:focus {
-    border-color: rgba(196,181,253,0.35) !important;
-    box-shadow:
-        0 0 0 2px rgba(139,92,246,0.12),
-        inset 0 1px 0 rgba(255,255,255,0.08) !important;
+    border-radius: 20px !important;
 }
 
 label, .gr-form > label, .gr-block-label {
@@ -1311,70 +991,46 @@ label, .gr-form > label, .gr-block-label {
     border: 1px solid rgba(255,255,255,0.12) !important;
     background: rgba(255,255,255,0.05) !important;
     overflow: hidden !important;
-    box-shadow: var(--shadow-soft), var(--inner-light);
 }
 
 .message-row .message, .bubble {
     border-radius: 20px !important;
 }
 
-.control-row {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
+footer {
+    display: none !important;
 }
 
-.results-actions-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    align-items: stretch;
-    width: 100%;
-    margin-top: 18px;
-}
-
-.reveal-up {
+.reveal {
     opacity: 0;
-    transform: translateY(34px);
-    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(.2,.8,.2,1);
-    will-change: opacity, transform;
+    transform: translateY(24px);
+    transition: opacity 0.75s ease, transform 0.75s ease;
 }
 
-.reveal-up.is-visible {
+.reveal.show {
     opacity: 1;
     transform: translateY(0);
 }
 
-@media (max-width: 1280px) {
-    .timeline-vertical {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
-
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
     .hero-grid,
+    .timeline-grid,
     .dashboard-grid,
     .results-hero,
-    .info-grid,
     .control-row,
     .summary-top {
         grid-template-columns: 1fr !important;
         flex-direction: column;
     }
 
-    .hero-side {
-        min-height: auto;
-    }
-
-    .score-orb {
-        width: 190px;
-        height: 190px;
+    .timeline-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     }
 }
 
 @media (max-width: 768px) {
     .gradio-container {
-        padding: 10px 10px 24px 10px !important;
+        padding: 10px !important;
     }
 
     .hero-wrap,
@@ -1400,7 +1056,7 @@ label, .gr-form > label, .gr-block-label {
         font-size: 20px;
     }
 
-    .timeline-vertical,
+    .timeline-grid,
     .dashboard-grid,
     .control-row {
         grid-template-columns: 1fr !important;
@@ -1408,63 +1064,37 @@ label, .gr-form > label, .gr-block-label {
 
     .results-hero {
         grid-template-columns: 1fr !important;
-        text-align: left;
     }
 
-    .question-text {
-        font-size: 17px;
-    }
-
-    .upload-title {
-        font-size: 26px;
-    }
-
-    .summary-card,
-    .output-card,
-    .progress-card,
-    .upload-card,
-    .action-card {
-        padding: 18px;
+    .score-orb {
+        width: 190px;
+        height: 190px;
     }
 }
 """
 
-cursor_script = """
+custom_js = """
 <script>
 document.addEventListener("mousemove", function(e){
   document.documentElement.style.setProperty("--mx", e.clientX + "px");
   document.documentElement.style.setProperty("--my", e.clientY + "px");
 });
 
-(function(){
-  const applyReveal = () => {
-    const items = document.querySelectorAll('.reveal-up');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-        }
-      });
-    }, { threshold: 0.12 });
-
-    items.forEach((item) => observer.observe(item));
-  };
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", applyReveal);
-  } else {
-    applyReveal();
-  }
-
-  const rerunReveal = () => {
-    document.querySelectorAll('.reveal-up').forEach((el, idx) => {
-      setTimeout(() => el.classList.add('is-visible'), idx * 40);
+function runReveal() {
+  const els = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('show');
+      }
     });
-  };
+  }, { threshold: 0.12 });
 
-  setTimeout(rerunReveal, 500);
-  document.addEventListener("click", () => setTimeout(rerunReveal, 500));
-})();
+  els.forEach((el) => observer.observe(el));
+}
+
+setTimeout(runReveal, 300);
+document.addEventListener("click", () => setTimeout(runReveal, 300));
 </script>
 """
 
@@ -1479,11 +1109,11 @@ with gr.Blocks(theme=theme, css=custom_css) as demo:
     report_text_state = gr.State("")
     comparison_text_state = gr.State("")
 
-    gr.HTML(cursor_script)
+    gr.HTML(custom_js)
 
     gr.HTML(
         """
-        <div class="main-shell reveal-up">
+        <div class="main-shell reveal">
             <div class="hero-wrap">
                 <div class="hero-grid">
                     <div>
@@ -1499,7 +1129,7 @@ with gr.Blocks(theme=theme, css=custom_css) as demo:
                             <div class="hero-pill">Clay Morphism</div>
                             <div class="hero-pill">Smooth Scroll</div>
                             <div class="hero-pill">Scroll Reveal</div>
-                            <div class="hero-pill">3D Premium Depth</div>
+                            <div class="hero-pill">3D Premium UI</div>
                         </div>
                     </div>
                     <div class="hero-side">
@@ -1531,94 +1161,89 @@ with gr.Blocks(theme=theme, css=custom_css) as demo:
         """
     )
 
-    with gr.Column(elem_classes=["section-shell", "reveal-up"]):
+    with gr.Column(elem_classes=["section-shell", "reveal"]):
         gr.HTML(
             """
             <div class="section-kicker">Top Layout</div>
             <div class="section-title">Full-Screen Resume Workspace</div>
             <div class="section-subtitle">
                 No split screen. Everything flows in a clean full-width layout with premium cards,
-                smooth transitions, better readability, and stronger mobile responsiveness.
+                smoother motion, glass depth, clay surfaces, and better mobile responsiveness.
             </div>
             """
         )
 
-        with gr.Row(elem_classes=["full-width-grid"]):
-            with gr.Column(elem_classes=["input-panel"]):
-                gr.HTML(
-                    """
-                    <div class="glass-card upload-card reveal-up">
-                        <div class="upload-title">Resume Upload</div>
-                        <div class="upload-text">
-                            Upload your PDF resume. The system will automatically detect the best-fit role for the interview.
-                        </div>
-                        <div class="auto-pill">Automatic Setup Enabled</div>
-                    </div>
-                    """
-                )
+        gr.HTML(
+            """
+            <div class="timeline-grid reveal">
+                <div class="timeline-node">
+                    <div class="timeline-step">Step 01</div>
+                    <div class="timeline-title">Upload Resume</div>
+                    <div class="timeline-text">Upload a PDF resume through the premium full-width upload control.</div>
+                </div>
+                <div class="timeline-node">
+                    <div class="timeline-step">Step 02</div>
+                    <div class="timeline-title">Auto Detection</div>
+                    <div class="timeline-text">The system parses the resume and infers the best-fit interview role automatically.</div>
+                </div>
+                <div class="timeline-node">
+                    <div class="timeline-step">Step 03</div>
+                    <div class="timeline-title">Adaptive Interview</div>
+                    <div class="timeline-text">Questions are generated and evaluated with live progress and optional voice input.</div>
+                </div>
+                <div class="timeline-node">
+                    <div class="timeline-step">Step 04</div>
+                    <div class="timeline-title">Command Dashboard</div>
+                    <div class="timeline-text">Final score, analytics, improvements, PDF export, and email delivery are generated.</div>
+                </div>
+            </div>
+            """
+        )
 
-                upload_resume = gr.UploadButton(
-                    "Upload Resume (PDF)",
-                    file_types=[".pdf"],
-                    file_count="single",
-                    elem_classes=["upload-resume-btn"],
-                )
+        gr.HTML(
+            """
+            <div class="glass-card upload-card reveal" style="margin-top:16px;">
+                <div class="upload-title">Resume Upload</div>
+                <div class="upload-text">
+                    Upload your PDF resume. The system will automatically detect the best-fit role for the interview.
+                </div>
+                <div class="auto-pill">Automatic Setup Enabled</div>
+            </div>
+            """
+        )
 
-                gr.HTML(
-                    """
-                    <div class="glass-card action-card reveal-up">
-                        <div class="upload-text" style="margin-bottom: 0;">
-                            Click Analyze Resume to generate a clean structured summary with contact details, skills, experience, projects, and education.
-                        </div>
-                    </div>
-                    """
-                )
+        upload_resume = gr.UploadButton(
+            "Upload Resume (PDF)",
+            file_types=[".pdf"],
+            file_count="single",
+            elem_classes=["upload-resume-btn"],
+        )
 
-                analyze_btn = gr.Button(
-                    "Analyze Resume",
-                    variant="primary",
-                    elem_classes=["small-action"],
-                )
+        gr.HTML(
+            """
+            <div class="glass-card action-card reveal" style="margin-top:16px;">
+                <div class="upload-text" style="margin-bottom:0;">
+                    Click Analyze Resume to generate a structured summary with contact details, skills, experience, projects, and education.
+                </div>
+            </div>
+            """
+        )
 
-                summary_html = gr.HTML(
-                    render_analysis_dashboard({}, "Other")
-                )
+        analyze_btn = gr.Button(
+            "Analyze Resume",
+            variant="primary",
+            elem_classes=["small-action"],
+        )
 
-            with gr.Column(elem_classes=["output-panel"]):
-                gr.HTML(
-                    """
-                    <div class="timeline-vertical reveal-up">
-                        <div class="timeline-node">
-                            <div class="timeline-step">Step 01</div>
-                            <div class="timeline-title">Upload Resume</div>
-                            <div class="timeline-text">User uploads a PDF resume through the premium upload control.</div>
-                        </div>
-                        <div class="timeline-node">
-                            <div class="timeline-step">Step 02</div>
-                            <div class="timeline-title">Auto Detection</div>
-                            <div class="timeline-text">The system parses the resume and infers the most suitable interview role automatically.</div>
-                        </div>
-                        <div class="timeline-node">
-                            <div class="timeline-step">Step 03</div>
-                            <div class="timeline-title">Adaptive Interview</div>
-                            <div class="timeline-text">Questions are generated and evaluated with progress tracking and optional voice input.</div>
-                        </div>
-                        <div class="timeline-node">
-                            <div class="timeline-step">Step 04</div>
-                            <div class="timeline-title">Command Dashboard</div>
-                            <div class="timeline-text">Final score, analytics, improvements, PDF export, and email delivery are generated.</div>
-                        </div>
-                    </div>
-                    """
-                )
+        summary_html = gr.HTML(render_analysis_dashboard({}, "Other"))
 
-    with gr.Column(elem_classes=["section-shell", "reveal-up"]):
+    with gr.Column(elem_classes=["section-shell", "reveal"]):
         gr.HTML(
             """
             <div class="section-kicker">Middle Layout</div>
             <div class="section-title">Interview Workspace</div>
             <div class="section-subtitle">
-                Start the interview, answer questions by text or voice, and track your progress in one clean full-width section.
+                Start the interview, answer questions by text or voice, and track your progress in one clean section.
             </div>
             """
         )
@@ -1680,7 +1305,7 @@ with gr.Blocks(theme=theme, css=custom_css) as demo:
             elem_classes=["small-action"],
         )
 
-    with gr.Column(elem_classes=["section-shell", "reveal-up"]):
+    with gr.Column(elem_classes=["section-shell", "reveal"]):
         gr.HTML(
             """
             <div class="section-kicker">Bottom Layout</div>
@@ -1697,6 +1322,8 @@ with gr.Blocks(theme=theme, css=custom_css) as demo:
                 "Complete the interview first, then generate your final performance dashboard.",
             )
         )
+
+        gr.HTML("<div style='height: 8px;'></div>")
 
         with gr.Row(elem_classes=["dashboard-grid"]):
             comparison_html = gr.HTML(
